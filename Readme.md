@@ -27,7 +27,7 @@ geocoder
   .on('locations:rejected', function(locs){
     console.log('locations rejected: ',locs);
   });
-
+```
 
 ## Events
 
