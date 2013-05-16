@@ -42,8 +42,8 @@ geocoder
 
 ### Geocoder#geocode([locations], options)
 
-Geocodes a list of locations. Supports the option 
-  - reverse: {Boolean} Sets called URL for reversed geocoding
+Geocodes a list of locations. Supports the option: 
+  - reverse: ```{Boolean}``` Sets called URL for reversed geocoding
 
   
 ## Tests
