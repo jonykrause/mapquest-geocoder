@@ -1,6 +1,6 @@
 # MapQuest Geocoder
 
-Node Geocoder using the MapQuest Open Geocoding API Web Service.
+Node Geocoder using the [MapQuest Open Geocoding API Web Service](http://open.mapquestapi.com/geocoding/).
 
 
 ## Example
