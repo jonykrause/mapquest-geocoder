@@ -6,10 +6,9 @@ var records = []
   , Geocoder = require('../../index')
   , validate = require('./validate')
   , csv = require('csv')
-  , colors = require('colors')
   , INPUT = __dirname + '/locations.csv'
   , OUTPUT = __dirname + '/result/locations.out.json'
-  , geocoder = new Geocoder();
+  , geocoder = new Geocoder;
 
 
 /**
