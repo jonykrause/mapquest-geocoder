@@ -1,4 +1,4 @@
-var geocoder = require('../../index');
+var Geocoder = require('../../index');
 var geocoder = new Geocoder;
 
 
