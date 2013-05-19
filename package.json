@@ -1,6 +1,10 @@
 {
-  "name": "mapquest geocoder",
+  "name": "mapquest-geocoder",
   "description": "Geocoder using the MapQuest Open Geocoding API Web Service",
   "version": "0.0.1",
-  "keywords": ["geocoder", "mapquest", "map"]
+  "keywords": ["geocoder", "mapquest", "map"],
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  }  
 }
