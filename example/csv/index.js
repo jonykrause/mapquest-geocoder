@@ -15,15 +15,15 @@ var records = []
  *  Hook in events to get data
  */
 
-geocoder.on('locations:received', function(locs){
-  console.log('EOF, converted ' + locs.length +' entries. Writing to ' + OUTPUT + '\n');
-  return fs.createWriteStream(OUTPUT).write(JSON.stringify(locs));
-
+geocoder.on('location:received', function(l) {
+  console.log(l);
 });
 
-geocoder.on('locations:rejected', function(locs){
-  console.log('No results for ' + JSON.stringify(locs));
-  return fs.createWriteStream(__dirname + '/result/error.json').write(JSON.stringify(locs));
+geocoder.on('geocoding:finished', function(locations) {
+  console.log('EOF, converted ' + locations.received.length +' entries. Writing to ' + OUTPUT + '\n');
+  fs.createWriteStream(OUTPUT).write(JSON.stringify(locations.received));
+  console.log('No results for ' + JSON.stringify(locations.rejected));
+  return fs.createWriteStream(__dirname + '/result/error.json').write(JSON.stringify(locations.rejected));
 });
 
 
