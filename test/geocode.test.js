@@ -39,7 +39,7 @@ describe('#geocode("invalid address")', function() {
 });
 
 
-describe('#geocode([lat, long")', function() {
+describe('#geocode(lat, long")', function() {
   it('should emit with received data', function(done) {
     var geocoder = new Geocoder;
     geocoder.geocode(testData.latLong, { reverse: true });
@@ -57,7 +57,7 @@ describe('#geocode([valid list])', function() {
   it('should emit with received data', function(done) {
     var geocoder = new Geocoder;      
     geocoder.geocode(testData.validAddressList);
-    
+
     geocoder.on('geocoding:finished', function(geocodedLocations) {         
       should.exist(geocodedLocations.received);
       should.not.exist(geocodedLocations.rejected);
