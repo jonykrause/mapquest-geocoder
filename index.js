@@ -58,18 +58,16 @@ util.inherits(Geocoder, EventEmitter);
  */
 
 
-Geocoder.prototype.geocode = function(locations, options) {
-  var received = []
-    , rejected = []
-    , self = this;
+Geocoder.prototype.geocode = function(locations, options) {    
+  var self = this
+    , geocodedLocations = {};
 
   if (!Array.isArray(locations)) locations = locations.split();
 
   function nxtLocation(){
 
     if (!locations.length) {
-      self.emit('locations:received', received);
-      self.emit('locations:rejected', rejected);
+      self.emit('geocoding:finished', geocodedLocations);   
       return self;
     }
 
@@ -81,12 +79,14 @@ Geocoder.prototype.geocode = function(locations, options) {
       var result = JSON.parse(data).results;
 
       if (result[0].locations.length) {
+        geocodedLocations.received = geocodedLocations.received || [];
+        geocodedLocations.received.push(result);
         self.emit('location:received', result[0].locations[0]);
-        received.push(result);
       }
       else {
+        geocodedLocations.rejected = geocodedLocations.rejected || [];
+        geocodedLocations.rejected.push(result);
         self.emit('location:rejected', result[0].providedLocation.location);
-        rejected.push(result);
       }
       nxtLocation();
     }, options )
