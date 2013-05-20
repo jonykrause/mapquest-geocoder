@@ -9,14 +9,14 @@ geocoder
 
 
 geocoder
-  .on('location:received', function(loc){
-    console.log('location received: ',loc);
+  .on('location:received', function(location){
+    console.log('location received: ', location);
   })
-  .on('location:rejected', function(loc){
-    console.log('location rejected: ',loc);
+  .on('location:rejected', function(location){
+    console.log('location rejected: ', location);
   })
   .on('geocoding:finished', function(locations){
-    console.log('locations received: ',locations.received);
-    console.log('locations rejected: ',locations.rejected);
+    console.log('locations received: ', locations.received);
+    console.log('locations rejected: ', locations.rejected);
     console.log('finished');
   });
