@@ -6,13 +6,15 @@ Node Geocoder using the [MapQuest Open Geocoding API Web Service](http://open.ma
 ## Example
 
 ```js
-var Geocoder = require('../../index');
-var geocoder = new Geocoder;
+var Geocoder = require('../../index') 
+  , geocoder = new Geocoder;
+
 
 geocoder
-  .geocode(['34.549523, 69.167494'], { reverse: true })
+  .geocode(['52.516815, 13.390421'], { reverse: true })
   .geocode('Unter den Linden 17, Berlin, Germany')
-  .geocode(['Afghanistan, Kabul', 'Albania, Tirana'])
+  .geocode(['Afghanistan, Kabul', 'Albania, Tirana', 'Unter den Linden 17, Berlin, Germany'])
+
 
 geocoder
   .on('location:received', function(loc){
@@ -21,11 +23,10 @@ geocoder
   .on('location:rejected', function(loc){
     console.log('location rejected: ',loc);
   })
-  .on('locations:received', function(locs){
-    console.log('locations received: ',locs);
-  })
-  .on('locations:rejected', function(locs){
-    console.log('locations rejected: ',locs);
+  .on('geocoding:finished', function(locations){
+    console.log('locations received: ',locations.received);
+    console.log('locations rejected: ',locations.rejected);
+    console.log('finished');
   });
 ```
 
@@ -33,8 +34,7 @@ geocoder
 
    - `location:received` Location was successfully geocoded and received
    - `location:rejected` Location got rejected, no result
-   - `locations:received` Geocoding finished, includes all locations that were successfully geocoded
-   - `locations:rejected` Geocoding finished, includes all locations that were rejected
+   - `geocoding:finished` Geocoding finished, includes all locations that were successfully geocoded and rejected
 
 
 ## API
@@ -48,7 +48,11 @@ Geocodes a list of locations. Supports the option:
   
 ## Tests
 
-Todo^^
+```
+$ npm install
+$ mocha
+```
+
 
 
 ## License
