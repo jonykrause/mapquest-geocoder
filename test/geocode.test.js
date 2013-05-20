@@ -15,6 +15,7 @@ describe('#geocode("valid address")', function() {
   it('should emit with received data', function(done) {
     var geocoder = new Geocoder;      
     geocoder.geocode(testData.validAddress);
+    
     geocoder.on('geocoding:finished', function(geocodedLocations) {         
       should.exist(geocodedLocations.received);
       should.not.exist(geocodedLocations.rejected);
@@ -29,6 +30,7 @@ describe('#geocode("invalid address")', function() {
   it('should emit with rejected data', function(done) {
     var geocoder = new Geocoder;
     geocoder.geocode(testData.invalidAddress);
+
     geocoder.on('geocoding:finished', function(geocodedLocations) {         
       should.exist(geocodedLocations.rejected);
       should.not.exist(geocodedLocations.received);
@@ -43,6 +45,7 @@ describe('#geocode(lat, long")', function() {
   it('should emit with received data', function(done) {
     var geocoder = new Geocoder;
     geocoder.geocode(testData.latLong, { reverse: true });
+
     geocoder.on('geocoding:finished', function(geocodedLocations) {         
       should.exist(geocodedLocations.received);
       should.not.exist(geocodedLocations.rejected);
@@ -53,7 +56,7 @@ describe('#geocode(lat, long")', function() {
 });
 
 
-describe('#geocode([valid list])', function() {
+describe('#geocode([valid list])', function() {  
   it('should emit with received data', function(done) {
     var geocoder = new Geocoder;      
     geocoder.geocode(testData.validAddressList);
@@ -64,11 +67,12 @@ describe('#geocode([valid list])', function() {
       geocodedLocations.received.should.have.length(3);
       done();
     })
+
   })
 });  
 
 
-describe('#geocode([invalid list])', function() {
+describe('#geocode([invalid list])', function() {  
   it('should emit with received and rejected data not being empty', function(done) {    
     var geocoder = new Geocoder;      
     geocoder.geocode(testData.invalidAddressList);
