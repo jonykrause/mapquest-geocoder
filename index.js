@@ -22,10 +22,9 @@ module.exports = Geocoder;
  *
  * Events:
  *
- *   - `location:received` location successfully received
- *   - `location:rejected` location lookup failed, got rejected
- *   - `locations:received` all locations that are successfully received
- *   - `locations:rejected` all locations that got rejected
+ *  - `location:received` Location was successfully geocoded and received
+ *  - `location:rejected` Location got rejected, no result
+ *  - `geocoding:finished` Geocoding finished, includes all locations that were successfully geocoded and rejected
  */
 
 
