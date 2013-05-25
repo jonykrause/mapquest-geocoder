@@ -18,5 +18,4 @@ geocoder
   .on('geocoding:finished', function(locations){
     console.log('locations received: ', locations.received);
     console.log('locations rejected: ', locations.rejected);
-    console.log('finished');
   });
