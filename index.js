@@ -122,26 +122,26 @@ Geocoder.prototype.requestLocation = function(location, callback, options) {
 /**
  * Request wrapper
  *
- * @param {Object} options
+ * @param {Object} params
  * @param {Function} callback
  */
 
 Geocoder.prototype.request = function(params, callback) {
-  http.get( params, function ( response ) {
-    var data = "", result;
-    response.on("error", function ( err ) {
+  http.get( params, function (response) {
+    var data = '';
+    response.on('error', function(err) {
       return callback(err);
     });
 
-    response.on("data", function ( chunk ) {
+    response.on('data', function(chunk) {
       data += chunk;
     });
 
-    response.on("end", function ( argument ) {
+    response.on('end', function(argument) {
       return callback(null, data);
     });
 
-  }).on("error", function (err) {
+  }).on('error', function(err) {
     return callback(err);
   })
 };
