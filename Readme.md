@@ -49,7 +49,7 @@ Geocodes a list of locations. Supports the option:
 
 ```
 $ npm install
-$ mocha
+$ npm test
 ```
 
 
