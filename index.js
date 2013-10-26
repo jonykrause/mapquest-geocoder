@@ -29,7 +29,7 @@ module.exports = Geocoder;
 
 
 function Geocoder () {
-  this.config = {
+  this.service = {
     host: 'open.mapquestapi.com',
     path: '/geocoding/v1/address?',
     reversePath: '/geocoding/v1/reverse?',
@@ -57,26 +57,21 @@ util.inherits(Geocoder, EventEmitter);
  */
 
 
-Geocoder.prototype.geocode = function(locations, options) {    
-  var self = this
-    , geocodedLocations = {};
+Geocoder.prototype.geocode = function(locations, options) {
+  var self = this, geocodedLocations = {};
 
   if (!Array.isArray(locations)) locations = locations.split();
 
-  function nxtLocation(){
-
+  function nxtLocation() {
     if (!locations.length) {
-      self.emit('geocoding:finished', geocodedLocations);   
+      self.emit('geocoding:finished', geocodedLocations);
       return self;
     }
-
     var currentLocation = locations.pop();
 
-    self.requestLocation(currentLocation, function(err, data){
+    self.requestLocation(currentLocation, function(err, data) {
       if (err) throw err;
-
       var result = JSON.parse(data).results;
-
       if (result[0].locations.length) {
         geocodedLocations.received = geocodedLocations.received || [];
         geocodedLocations.received.push(result);
@@ -90,6 +85,7 @@ Geocoder.prototype.geocode = function(locations, options) {
       nxtLocation();
     }, options )
   }
+
   nxtLocation();
   return this;
 };
@@ -109,9 +105,9 @@ Geocoder.prototype.requestLocation = function(location, callback, options) {
   if (!options) options = {};
 
   var params = {
-    host: this.config.host,
-    path: options.reverse ? this.config.reversePath + 'location=' + encodeURIComponent(location) : this.config.path + 'location=' + encodeURIComponent(location),
-    port: this.config.port,
+    host: this.service.host,
+    path: options.reverse ? this.service.reversePath + 'location=' + encodeURIComponent(location) : this.service.path + 'location=' + encodeURIComponent(location),
+    port: this.service.port,
     headers: {}
   };
 
