@@ -56,36 +56,37 @@ util.inherits(Geocoder, EventEmitter);
  * @param  {Object} options
  */
 
+
 Geocoder.prototype.geocode = function(locations, options) {
+  var self = this, geocoded = {};
+
   if (!Array.isArray(locations)) locations = locations.split();
-  this.gen = this.requestLocations(locations, options);
-  this.gen.next();
+
+  var requestLocations = function* (locs) {
+    for (let loc in locs) {
+      yield self.requestLocation(loc, function(err, data) {
+        if (err) throw err;
+        var result = JSON.parse(data).results;
+        if (result[0].locations.length) {
+          geocoded.received = geocoded.received || [];
+          geocoded.received.push(result);
+          self.emit('location:received', result[0].locations[0]);
+        }
+        else {
+          geocoded.rejected = geocoded.rejected || [];
+          geocoded.rejected.push(result);
+          self.emit('location:rejected', result[0].providedLocation.location);
+        }
+        gen.next();
+      }, options )
+      self.emit('geocoding:finished', geocoded);
+    };
+  }
+
+  var gen = requestLocations(locations);
+  gen.next();
+
   return this;
-};
-
-
-Geocoder.prototype.filterResponse = function(err, data) {
-  if (err) throw err;
-  this.geocodedLocations = {};
-  var result = JSON.parse(data).results, geocoded = this.geocodedLocations;
-  if (result[0].locations.length) {
-    geocoded.received = geocoded.received || [];
-    geocoded.received.push(result);
-    this.emit('location:received', result[0].locations[0]);
-  }
-  else {
-    geocoded.rejected = geocoded.rejected || [];
-    geocoded.rejected.push(result);
-    this.emit('location:rejected', result[0].providedLocation.location);
-  }
-  this.gen.next();
-};
-
-Geocoder.prototype.requestLocations = function* (locs, options) {
-  for (let loc in locs) {
-    yield this.requestLocation(loc, this.filterResponse.bind(this), options);
-    this.emit('geocoding:finished', this.geocodedLocations);
-  };
 };
 
 
