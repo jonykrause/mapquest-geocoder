@@ -62,31 +62,36 @@ Geocoder.prototype.geocode = function(locations, options) {
 
   if (!Array.isArray(locations)) locations = locations.split();
 
-  var requestLocations = function* (locs) {
-    for (let loc in locs) {
-      yield self.requestLocation(loc, function(err, data) {
-        if (err) throw err;
-        var result = JSON.parse(data).results;
-        if (result[0].locations.length) {
-          geocoded.received = geocoded.received || [];
-          geocoded.received.push(result);
-          self.emit('location:received', result[0].locations[0]);
-        }
-        else {
-          geocoded.rejected = geocoded.rejected || [];
-          geocoded.rejected.push(result);
-          self.emit('location:rejected', result[0].providedLocation.location);
-        }
-        gen.next();
-      }, options )
-      self.emit('geocoding:finished', geocoded);
-    };
-  }
-
-  var gen = requestLocations(locations);
-  gen.next();
-
+  control(function* () {
+    for (let loc in locations) {
+      console.log(this);
+      var response = yield self.requestLocation(loc, options);
+      var result = JSON.parse(response).results;
+      var filtered = self.addResult(result, geocoded);
+    }
+    self.emit('geocoding:finished', geocoded);
+  });
   return this;
+};
+
+
+/**
+ * Adds result to specific bucket, filters received, rejected
+ *
+ * @param  {Object} result
+ * @param  {Array} bucket
+ */
+Geocoder.prototype.addResult = function(result, bucket) {
+  if (result[0].locations.length) {
+    bucket.received = bucket.received || [];
+    bucket.received.push(result);
+    this.emit('location:received', result[0].locations[0]);
+  } else {
+    bucket.rejected = bucket.rejected || [];
+    bucket.rejected.push(result);
+    this.emit('location:rejected', result[0].providedLocation.location);
+  }
+  return bucket;
 };
 
 
@@ -98,11 +103,9 @@ Geocoder.prototype.geocode = function(locations, options) {
  * @param  {Object}   options
  */
 
-Geocoder.prototype.requestLocation = function(location, callback, options) {
+Geocoder.prototype.requestLocation = function(location, options) {
   if (!location) throw new Error( "Geocoder.requestLocation requires a location");
-
   if (!options) options = {};
-
   var params = {
     host: this.service.host,
     path: options.reverse ? this.service.reversePath + 'location=' + encodeURIComponent(location) : this.service.path + 'location=' + encodeURIComponent(location),
@@ -110,7 +113,28 @@ Geocoder.prototype.requestLocation = function(location, callback, options) {
     headers: {}
   };
 
-  return this.request(params, callback);
+  return function (callback) {
+    request(params, callback);
+  }
+};
+
+
+/**
+ * Generator controller
+ *
+ * @param {Generator Function} generator
+ */
+
+function control(generator) {
+  var gen = generator();
+  function next(err, data) {
+    if (err) return gen.throw(err);
+    var state = gen.send(data);
+    if (!state.done) {
+      state.value(next);
+    }
+  }
+  next();
 };
 
 
@@ -121,7 +145,7 @@ Geocoder.prototype.requestLocation = function(location, callback, options) {
  * @param {Function} callback
  */
 
-Geocoder.prototype.request = function(params, callback) {
+function request(params, callback) {
   http.get( params, function (response) {
     var data = '';
     response.on('error', function(err) {
