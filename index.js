@@ -52,10 +52,10 @@ util.inherits(Geocoder, EventEmitter);
  *
  *    - `reverse`: {Boolean} reverse or normal geocode
  *
- * @param  {Array} locations
- * @param  {Object} options
+ * @param {Array} locations
+ * @param {Object} options
+ * @return {Geocoder} chaining
  */
-
 
 Geocoder.prototype.geocode = function(locations, options) {
   var self = this, geocoded = {};
@@ -63,9 +63,8 @@ Geocoder.prototype.geocode = function(locations, options) {
   if (!Array.isArray(locations)) locations = locations.split();
 
   control(function* () {
-    for (let loc in locations) {
-      console.log(this);
-      var response = yield self.requestLocation(loc, options);
+    for (let i = 0, l = locations.length; i < l; i++) {
+      var response = yield self.requestLocation(locations[i], options);
       var result = JSON.parse(response).results;
       var filtered = self.addResult(result, geocoded);
     }
@@ -78,8 +77,9 @@ Geocoder.prototype.geocode = function(locations, options) {
 /**
  * Adds result to specific bucket, filters received, rejected
  *
- * @param  {Object} result
- * @param  {Array} bucket
+ * @param {Object} result
+ * @param {Array} bucket
+ * @return {Array} bucket
  */
 Geocoder.prototype.addResult = function(result, bucket) {
   if (result[0].locations.length) {
@@ -98,9 +98,10 @@ Geocoder.prototype.addResult = function(result, bucket) {
 /**
  * Request MapQuest Open Geocoding API Web Service
  *
- * @param  {String}   location
- * @param  {Function} callback
- * @param  {Object}   options
+ * @param {String} location
+ * @param {Function} callback
+ * @param {Object} options
+ * @return {Function} encapsulate request
  */
 
 Geocoder.prototype.requestLocation = function(location, options) {
@@ -108,7 +109,7 @@ Geocoder.prototype.requestLocation = function(location, options) {
   if (!options) options = {};
   var params = {
     host: this.service.host,
-    path: options.reverse ? this.service.reversePath + 'location=' + encodeURIComponent(location) : this.service.path + 'location=' + encodeURIComponent(location),
+    path: options.reverse ? this.service.reversePath + 'location=' + location : this.service.path + 'location=' + location,
     port: this.service.port,
     headers: {}
   };
