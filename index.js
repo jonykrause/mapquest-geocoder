@@ -66,7 +66,7 @@ Geocoder.prototype.geocode = function(locs, options) {
     for (let i = 0, l = locs.length; i < l; i++) {
       var response = yield self.requestLocation(locs[i], options);
       var result = JSON.parse(response).results;
-      var filtered = self.addResult(result, geocoded);
+      self.addResult(result, geocoded);
     }
     self.emit('geocoding:finished', geocoded);
   });
