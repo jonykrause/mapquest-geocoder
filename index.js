@@ -52,19 +52,19 @@ util.inherits(Geocoder, EventEmitter);
  *
  *    - `reverse`: {Boolean} reverse or normal geocode
  *
- * @param {Array} locations
+ * @param {Array} locs
  * @param {Object} options
  * @return {Geocoder} chaining
  */
 
-Geocoder.prototype.geocode = function(locations, options) {
+Geocoder.prototype.geocode = function(locs, options) {
   var self = this, geocoded = {};
 
-  if (!Array.isArray(locations)) locations = locations.split();
+  if (!Array.isArray(locs)) locs = locs.split();
 
   control(function* () {
-    for (let i = 0, l = locations.length; i < l; i++) {
-      var response = yield self.requestLocation(locations[i], options);
+    for (let i = 0, l = locs.length; i < l; i++) {
+      var response = yield self.requestLocation(locs[i], options);
       var result = JSON.parse(response).results;
       var filtered = self.addResult(result, geocoded);
     }
@@ -104,12 +104,12 @@ Geocoder.prototype.addResult = function(result, bucket) {
  * @return {Function} encapsulate request
  */
 
-Geocoder.prototype.requestLocation = function(location, options) {
-  if (!location) throw new Error( "Geocoder.requestLocation requires a location");
+Geocoder.prototype.requestLocation = function(loc, options) {
+  if (!loc) throw new Error( "Geocoder.requestLocation requires a location");
   if (!options) options = {};
   var params = {
     host: this.service.host,
-    path: options.reverse ? this.service.reversePath + 'location=' + location : this.service.path + 'location=' + location,
+    path: options.reverse ? this.service.reversePath + 'location=' + loc : this.service.path + 'location=' + loc,
     port: this.service.port,
     headers: {}
   };
@@ -140,27 +140,24 @@ function control(generator) {
 
 
 /**
- * Request wrapper
+ * Simple get wrapper
  *
  * @param {Object} params
  * @param {Function} callback
  */
 
 function request(params, callback) {
-  http.get( params, function (response) {
+  http.get( params, function (res) {
     var data = '';
-    response.on('error', function(err) {
+    res.on('error', function(err) {
       return callback(err);
     });
-
-    response.on('data', function(chunk) {
+    res.on('data', function(chunk) {
       data += chunk;
     });
-
-    response.on('end', function(argument) {
+    res.on('end', function(argument) {
       return callback(null, data);
     });
-
   }).on('error', function(err) {
     return callback(err);
   })
