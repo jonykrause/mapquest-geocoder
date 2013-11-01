@@ -54,7 +54,7 @@ $ npm test
 
 ## Addendum
 
-For ES6 Generator-based version have checkout [this branch](https://github.com/jonykrause/mapquest-geocoder/blob/es6-generator-flattened/index.js)
+For a ES6 Generator-based version have a look at [this branch](https://github.com/jonykrause/mapquest-geocoder/blob/es6-generator-flattened/index.js)
 
 ## License
 
