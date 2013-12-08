@@ -7,7 +7,7 @@ Node Geocoder using the [MapQuest Open Geocoding API Web Service](http://open.ma
 
 ```js
 var Geocoder = require('../../index') 
-  , geocoder = new Geocoder;
+  , geocoder = new Geocoder('yourAppKeyHere');
 
 
 geocoder
