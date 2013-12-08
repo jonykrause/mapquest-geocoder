@@ -3,7 +3,8 @@ var Geocoder = require('../index')
 
 
 var testData = {
-  validAddressList: ['Kabul, Afghanistan' , 'Albania, Tirana', 'Unter den Linden 17, Berlin, Germany'],
+  key: '',
+  validAddressList: ['Kabul, Afghanistan' , 'New York, USA', 'Unter den Linden 17, Berlin, Germany'],
   invalidAddressList: ['Kabul, Afghanistan', 'foo, bar, baz', 'Unter den Linden 17, Berlin, Germany'],
   validAddress: 'Unter den Linden 17, Berlin, Germany',
   invalidAddress: 'foo, bar, baz',
@@ -13,7 +14,7 @@ var testData = {
 describe('Geocoder', function() {
 
   beforeEach(function() {
-    geocoder = new Geocoder;
+    geocoder = new Geocoder(testData.key);
   });
 
   describe('#geocode("valid address")', function() {

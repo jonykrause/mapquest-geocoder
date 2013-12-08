@@ -1,11 +1,11 @@
-var Geocoder = require('../../index') 
-  , geocoder = new Geocoder;
+var Geocoder = require('../../index')
+  , geocoder = new Geocoder('yourAppKeyHere');
 
 
 geocoder
   .geocode(['52.516815, 13.390421'], { reverse: true })
   .geocode('Unter den Linden 17, Berlin, Germany')
-  .geocode(['Afghanistan, Kabul', 'Albania, Tirana', 'Unter den Linden 17, Berlin, Germany'])
+  .geocode(['Afghanistan, Kabul', 'New York, USA', 'Unter den Linden 17, Berlin, Germany'])
 
 
 geocoder

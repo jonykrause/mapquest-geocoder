@@ -25,15 +25,17 @@ module.exports = Geocoder;
  *  - `location:received` Location was successfully geocoded and received
  *  - `location:rejected` Location got rejected, no result
  *  - `geocoding:finished` Geocoding finished, includes all locations that were successfully geocoded and rejected
+ *
+ * @param  {String} key MapQuest requires an App Key
  */
 
-
-function Geocoder () {
+function Geocoder (key) {
+  if (!key) throw new Error('Geocoder requires a MapQuest App Key');
   this.service = {
     host: 'open.mapquestapi.com',
     path: '/geocoding/v1/address?',
     reversePath: '/geocoding/v1/reverse?',
-    port: 80
+    key: key
   }
 }
 
@@ -51,8 +53,8 @@ util.inherits(Geocoder, EventEmitter);
  * Options:
  *
  *    - `reverse`: {Boolean} reverse or normal geocode
- *
- * @param  {Array} locations
+*
+* @param  {Array} locations
  * @param  {Object} options
  */
 
@@ -101,13 +103,12 @@ Geocoder.prototype.geocode = function(locations, options) {
 
 Geocoder.prototype.requestLocation = function(location, callback, options) {
   if (!location) throw new Error( "Geocoder.requestLocation requires a location");
-
   if (!options) options = {};
-
+  var locationPath = encodeURIComponent(location) + '&key=' + this.service.key;
   var params = {
     host: this.service.host,
-    path: options.reverse ? this.service.reversePath + 'location=' + encodeURIComponent(location) : this.service.path + 'location=' + encodeURIComponent(location),
-    port: this.service.port,
+    path: options.reverse ? this.service.reversePath + 'location=' + locationPath : this.service.path + 'location=' + locationPath,
+    port: 80,
     headers: {}
   };
 
