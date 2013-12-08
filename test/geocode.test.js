@@ -3,7 +3,7 @@ var Geocoder = require('../index')
 
 
 var testData = {
-  key: '',
+  key: 'yourAppKeyHere',
   validAddressList: ['Kabul, Afghanistan' , 'New York, USA', 'Unter den Linden 17, Berlin, Germany'],
   invalidAddressList: ['Kabul, Afghanistan', 'foo, bar, baz', 'Unter den Linden 17, Berlin, Germany'],
   validAddress: 'Unter den Linden 17, Berlin, Germany',

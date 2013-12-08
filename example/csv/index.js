@@ -8,7 +8,7 @@ var records = []
   , csv = require('csv')
   , INPUT = __dirname + '/locations.csv'
   , OUTPUT = __dirname + '/result/locations.out.json'
-  , geocoder = new Geocoder;
+  , geocoder = new Geocoder('yourAppKeyHere');
 
 
 /**
