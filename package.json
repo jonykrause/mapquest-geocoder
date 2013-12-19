@@ -2,7 +2,7 @@
   "name": "mapquest-geocoder",
   "author": "Jonathan Krause <jony@jonathan-krause.de>",
   "description": "Geocoder using the MapQuest Open Geocoding API Web Service",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "keywords": [
     "geocoder",
     "mapquest",
