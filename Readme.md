@@ -50,12 +50,12 @@ geocoder
 ## API
 
 
-### Geocoder#geocode([locations], options)
+### Geocoder#geocode([locations], callback, options)
 
-Geocodes a list of locations. Supports the option: 
+Geocodes a list of locations. Supports the option:
   - reverse: ```{Boolean}``` Sets called URL for reversed geocoding
 
-  
+
 ## Tests
 
 ```
