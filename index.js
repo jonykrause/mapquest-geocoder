@@ -56,10 +56,11 @@ util.inherits(Geocoder, EventEmitter);
 *
 * @param  {Array} locations
  * @param  {Object} options
+ * @param  {Callback} Function takes geocoding result
  */
 
 
-Geocoder.prototype.geocode = function(locations, options) {
+Geocoder.prototype.geocode = function(locations, callback, options) {
   var self = this, geocodedLocations = {};
 
   if (!Array.isArray(locations)) locations = locations.split();
@@ -67,6 +68,7 @@ Geocoder.prototype.geocode = function(locations, options) {
   function nxtLocation() {
     if (!locations.length) {
       self.emit('geocoding:finished', geocodedLocations);
+      callback(geocodedLocations);
       return self;
     }
     var currentLocation = locations.pop();

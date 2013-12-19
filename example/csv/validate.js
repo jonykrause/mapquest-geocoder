@@ -1,9 +1,7 @@
 'use strict';
 
 
-/**
- * Custom input transformation
- */
+// Custom input transformation
 
 
 var accents = {

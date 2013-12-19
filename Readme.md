@@ -6,14 +6,25 @@ Node Geocoder using the [MapQuest Open Geocoding API Web Service](http://open.ma
 ## Example
 
 ```js
-var Geocoder = require('../../index') 
+var Geocoder = require('../../index')
   , geocoder = new Geocoder('yourAppKeyHere');
 
 
 geocoder
-  .geocode(['52.516815, 13.390421'], { reverse: true })
-  .geocode('Unter den Linden 17, Berlin, Germany')
-  .geocode(['Afghanistan, Kabul', 'Albania, Tirana', 'Unter den Linden 17, Berlin, Germany'])
+  .geocode(['52.516815, 13.390421'], function(locations) {
+    console.log('locations received: ', locations.received);
+    console.log('locations rejected: ', locations.rejected);
+  }, { reverse: true })
+
+  .geocode('Unter den Linden 17, Berlin, Germany', function(locations) {
+    console.log('locations received: ', locations.received);
+    console.log('locations rejected: ', locations.rejected);
+  })
+
+  .geocode(['Afghanistan, Kabul', 'New York, USA', 'Unter den Linden 17, Berlin, Germany'], function(locations) {
+    console.log('locations received: ', locations.received);
+    console.log('locations rejected: ', locations.rejected);
+  });
 
 
 geocoder
@@ -26,7 +37,7 @@ geocoder
   .on('geocoding:finished', function(locations){
     console.log('locations received: ', locations.received);
     console.log('locations rejected: ', locations.rejected);
-  });
+  })
 ```
 
 ## Events
