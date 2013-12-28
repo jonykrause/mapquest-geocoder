@@ -19,7 +19,8 @@ describe('Geocoder', function() {
 
   describe('#geocode("valid address")', function() {
     it('should return received data', function(done) {
-      geocoder.geocode(testData.validAddress, function(geocodedLocations) {
+      geocoder.geocode(testData.validAddress, function(err, geocodedLocations) {
+        if (err) throw err;
         should.exist(geocodedLocations.received);
         should.not.exist(geocodedLocations.rejected);
         geocodedLocations.received.should.not.be.empty;
@@ -31,7 +32,8 @@ describe('Geocoder', function() {
 
   describe('#geocode("invalid address")', function() {
     it('should return rejected data', function(done) {
-      geocoder.geocode(testData.invalidAddress, function(geocodedLocations) {
+      geocoder.geocode(testData.invalidAddress, function(err, geocodedLocations) {
+        if (err) throw err;
         should.exist(geocodedLocations.rejected);
         should.not.exist(geocodedLocations.received);
         geocodedLocations.rejected.should.not.be.empty;
@@ -43,7 +45,8 @@ describe('Geocoder', function() {
 
   describe('#geocode(lat, long")', function() {
     it('should return received data', function(done) {
-      geocoder.geocode(testData.latLong, function(geocodedLocations) {
+      geocoder.geocode(testData.latLong, function(err, geocodedLocations) {
+        if (err) throw err;
         should.exist(geocodedLocations.received);
         should.not.exist(geocodedLocations.rejected);
         geocodedLocations.received.should.not.be.empty;
@@ -55,7 +58,8 @@ describe('Geocoder', function() {
 
   describe('#geocode([valid list])', function() {
     it('should return received data', function(done) {
-      geocoder.geocode(testData.validAddressList, function(geocodedLocations) {
+      geocoder.geocode(testData.validAddressList, function(err, geocodedLocations) {
+        if (err) throw err;
         should.exist(geocodedLocations.received);
         should.not.exist(geocodedLocations.rejected);
         geocodedLocations.received.should.have.length(3);
@@ -68,7 +72,8 @@ describe('Geocoder', function() {
 
   describe('#geocode([invalid list])', function() {
     it('should return received and rejected data', function(done) {
-      geocoder.geocode(testData.invalidAddressList, function(geocodedLocations) {
+      geocoder.geocode(testData.invalidAddressList, function(err, geocodedLocations) {
+        if (err) throw err;
         should.exist(geocodedLocations.received);
         should.exist(geocodedLocations.rejected);
         geocodedLocations.rejected.should.have.length(1);

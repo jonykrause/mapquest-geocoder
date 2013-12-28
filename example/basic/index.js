@@ -1,19 +1,22 @@
 var Geocoder = require('../../index')
-  , geocoder = new Geocoder('Fmjtd%7Cluubn16y25%2Cas%3Do5-90aggu');
+  , geocoder = new Geocoder('yourAppKeyHere');
 
 
 geocoder
-  .geocode(['52.516815, 13.390421'], function(locations) {
+  .geocode(['52.516815, 13.390421'], function(err, locations) {
+    if (err) throw err;
     console.log('locations received: ', locations.received);
     console.log('locations rejected: ', locations.rejected);
   }, { reverse: true })
 
-  .geocode('Unter den Linden 17, Berlin, Germany', function(locations) {
+  .geocode('Unter den Linden 17, Berlin, Germany', function(err, locations) {
+    if (err) throw err;
     console.log('locations received: ', locations.received);
     console.log('locations rejected: ', locations.rejected);
   })
 
-  .geocode(['Afghanistan, Kabul', 'New York, USA', 'Unter den Linden 17, Berlin, Germany'], function(locations) {
+  .geocode(['Afghanistan, Kabul', 'New York, USA', 'Unter den Linden 17, Berlin, Germany'], function(err, locations) {
+    if (err) throw err;
     console.log('locations received: ', locations.received);
     console.log('locations rejected: ', locations.rejected);
   });

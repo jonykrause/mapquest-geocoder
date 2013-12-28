@@ -19,7 +19,8 @@ csv()
     records.push(validate(row));
   })
   .on('end', function(){
-    geocoder.geocode(records, function(locations) {
+    geocoder.geocode(records, function(err, locations) {
+      if (err) throw err;
       console.log('EOF, converted ' + locations.received.length +' entries. Writing to ' + OUTPUT + '\n');
       fs.createWriteStream(OUTPUT).write(JSON.stringify(locations.received));
       console.log('No results for ' + JSON.stringify(locations.rejected));

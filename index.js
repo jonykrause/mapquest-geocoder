@@ -68,13 +68,13 @@ Geocoder.prototype.geocode = function(locations, callback, options) {
   function nxtLocation() {
     if (!locations.length) {
       self.emit('geocoding:finished', geocodedLocations);
-      callback(geocodedLocations);
+      if (callback) callback(null, geocodedLocations);
       return self;
     }
     var currentLocation = locations.pop();
 
     self.requestLocation(currentLocation, function(err, data) {
-      if (err) throw err;
+      if (err) return callback(err);
       var result = JSON.parse(data).results;
       if (result[0].locations.length) {
         geocodedLocations.received = geocodedLocations.received || [];
