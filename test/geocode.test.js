@@ -1,8 +1,8 @@
-var Geocoder = require('../index')
-  , should = require('should');
+var Geocoder = require('../index');
+var should = require('should');
 
 
-var testData = {
+var fixtures = {
   key: 'yourAppKeyHere',
   validAddressList: ['Kabul, Afghanistan' , 'New York, USA', 'Unter den Linden 17, Berlin, Germany'],
   invalidAddressList: ['Kabul, Afghanistan', 'foo, bar, baz', 'Unter den Linden 17, Berlin, Germany'],
@@ -14,16 +14,16 @@ var testData = {
 describe('Geocoder', function() {
 
   beforeEach(function() {
-    geocoder = new Geocoder(testData.key);
+    geocoder = new Geocoder(fixtures.key);
   });
 
   describe('#geocode("valid address")', function() {
     it('should return received data', function(done) {
-      geocoder.geocode(testData.validAddress, function(err, geocodedLocations) {
+      geocoder.geocode(fixtures.validAddress, function(err, geocoded) {
         if (err) throw err;
-        should.exist(geocodedLocations.received);
-        should.not.exist(geocodedLocations.rejected);
-        geocodedLocations.received.should.not.be.empty;
+        should.exist(geocoded.received);
+        should.not.exist(geocoded.rejected);
+        geocoded.received.should.not.be.empty;
         done();
       })
     })
@@ -32,11 +32,11 @@ describe('Geocoder', function() {
 
   describe('#geocode("invalid address")', function() {
     it('should return rejected data', function(done) {
-      geocoder.geocode(testData.invalidAddress, function(err, geocodedLocations) {
+      geocoder.geocode(fixtures.invalidAddress, function(err, geocoded) {
         if (err) throw err;
-        should.exist(geocodedLocations.rejected);
-        should.not.exist(geocodedLocations.received);
-        geocodedLocations.rejected.should.not.be.empty;
+        should.exist(geocoded.rejected);
+        should.not.exist(geocoded.received);
+        geocoded.rejected.should.not.be.empty;
         done();
       })
     })
@@ -45,11 +45,11 @@ describe('Geocoder', function() {
 
   describe('#geocode(lat, long")', function() {
     it('should return received data', function(done) {
-      geocoder.geocode(testData.latLong, function(err, geocodedLocations) {
+      geocoder.geocode(fixtures.latLong, function(err, geocoded) {
         if (err) throw err;
-        should.exist(geocodedLocations.received);
-        should.not.exist(geocodedLocations.rejected);
-        geocodedLocations.received.should.not.be.empty;
+        should.exist(geocoded.received);
+        should.not.exist(geocoded.rejected);
+        geocoded.received.should.not.be.empty;
         done();
       }, { reverse: true });
     })
@@ -58,11 +58,11 @@ describe('Geocoder', function() {
 
   describe('#geocode([valid list])', function() {
     it('should return received data', function(done) {
-      geocoder.geocode(testData.validAddressList, function(err, geocodedLocations) {
+      geocoder.geocode(fixtures.validAddressList, function(err, geocoded) {
         if (err) throw err;
-        should.exist(geocodedLocations.received);
-        should.not.exist(geocodedLocations.rejected);
-        geocodedLocations.received.should.have.length(3);
+        should.exist(geocoded.received);
+        should.not.exist(geocoded.rejected);
+        geocoded.received.should.have.length(3);
         done();
       })
 
@@ -72,12 +72,12 @@ describe('Geocoder', function() {
 
   describe('#geocode([invalid list])', function() {
     it('should return received and rejected data', function(done) {
-      geocoder.geocode(testData.invalidAddressList, function(err, geocodedLocations) {
+      geocoder.geocode(fixtures.invalidAddressList, function(err, geocoded) {
         if (err) throw err;
-        should.exist(geocodedLocations.received);
-        should.exist(geocodedLocations.rejected);
-        geocodedLocations.rejected.should.have.length(1);
-        geocodedLocations.received.should.have.length(2);
+        should.exist(geocoded.received);
+        should.exist(geocoded.rejected);
+        geocoded.rejected.should.have.length(1);
+        geocoded.received.should.have.length(2);
         done();
       })
     })

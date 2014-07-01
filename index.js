@@ -5,9 +5,9 @@
  * Module Dependencies
  */
 
-var http = require('http')
-  , util = require('util')
-  , EventEmitter = require('events').EventEmitter;
+var http = require('http');
+var util = require('util');
+var EventEmitter = require('events').EventEmitter;
 
 
 /**
@@ -61,36 +61,38 @@ util.inherits(Geocoder, EventEmitter);
 
 
 Geocoder.prototype.geocode = function(locations, callback, options) {
-  var self = this, geocodedLocations = {};
+  var _this = this; 
+  var geocoded = {};
 
   if (!Array.isArray(locations)) locations = locations.split();
 
-  function nxtLocation() {
-    if (!locations.length) {
-      self.emit('geocoding:finished', geocodedLocations);
-      if (callback) callback(null, geocodedLocations);
-      return self;
-    }
-    var currentLocation = locations.pop();
+  function next() {
+    var current;
 
-    self.requestLocation(currentLocation, function(err, data) {
+    if (!locations.length) {
+      _this.emit('geocoding:finished', geocoded);
+      if (callback) callback(null, geocoded);
+      return _this;
+    }
+
+    current = locations.pop();
+
+    _this.requestLocation(current, function(err, data) {
       if (err) return callback(err);
       var result = JSON.parse(data).results;
       if (result[0].locations.length) {
-        geocodedLocations.received = geocodedLocations.received || [];
-        geocodedLocations.received.push(result);
-        self.emit('location:received', result[0].locations[0]);
+        geocoded.received = geocoded.received || [];
+        geocoded.received.push(result);
+        _this.emit('location:received', result[0].locations[0]);
+      } else {
+        geocoded.rejected = geocoded.rejected || [];
+        geocoded.rejected.push(result);
+        _this.emit('location:rejected', result[0].providedLocation.location);
       }
-      else {
-        geocodedLocations.rejected = geocodedLocations.rejected || [];
-        geocodedLocations.rejected.push(result);
-        self.emit('location:rejected', result[0].providedLocation.location);
-      }
-      nxtLocation();
+      setImmediate(next);
     }, options )
   }
-
-  nxtLocation();
+  next();
   return this;
 };
 

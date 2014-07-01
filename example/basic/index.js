@@ -1,5 +1,5 @@
-var Geocoder = require('../../index')
-  , geocoder = new Geocoder('yourAppKeyHere');
+var Geocoder = require('../../index');
+var geocoder = new Geocoder('yourAppKeyHere');
 
 
 geocoder

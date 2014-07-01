@@ -1,13 +1,13 @@
 # MapQuest Geocoder
 
-Node Geocoder using the [MapQuest Open Geocoding API Web Service](http://open.mapquestapi.com/geocoding/).
+Geocoder using the [MapQuest Open Geocoding API Web Service](http://open.mapquestapi.com/geocoding/).
 
 
 ## Example
 
 ```js
-var Geocoder = require('../../index')
-  , geocoder = new Geocoder('yourAppKeyHere');
+var Geocoder = require('../../index');
+var geocoder = new Geocoder('yourAppKeyHere');
 
 
 geocoder
