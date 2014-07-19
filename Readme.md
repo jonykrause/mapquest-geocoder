@@ -11,19 +11,12 @@ var geocoder = new Geocoder('yourAppKeyHere');
 
 
 geocoder
-  .geocode(['52.516815, 13.390421'], function(err, locations) {
-    if (err) throw err;
-    console.log('locations received: ', locations.received);
-    console.log('locations rejected: ', locations.rejected);
-  }, { reverse: true })
-
-  .geocode('Unter den Linden 17, Berlin, Germany', function(err, locations) {
-    if (err) throw err;
-    console.log('locations received: ', locations.received);
-    console.log('locations rejected: ', locations.rejected);
-  })
-
-  .geocode(['Afghanistan, Kabul', 'New York, USA', 'Unter den Linden 17, Berlin, Germany'], function(err, locations) {
+  .geocode([
+    '52.516815, 13.390421',
+    'Kabul, Afghanistan',
+    'New York, USA', 
+    'Unter den Linden 17, Berlin, Germany'
+  ], function(err, locations) {
     if (err) throw err;
     console.log('locations received: ', locations.received);
     console.log('locations rejected: ', locations.rejected);
@@ -53,10 +46,9 @@ geocoder
 ## API
 
 
-### Geocoder#geocode([locations], callback, options)
+### Geocoder#geocode([locations], callback)
 
-Geocodes a list of locations. Supports the option:
-  - reverse: ```{Boolean}``` Sets called URL for reversed geocoding
+Geocodes a list of locations.
 
 
 ## Tests
