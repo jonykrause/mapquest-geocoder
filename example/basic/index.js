@@ -29,7 +29,7 @@ geocoder
   .on('location:rejected', function(location){
     console.log('location rejected: ', location);
   })
-  .on('geocoding:finished', function(locations){
+  .on('finished', function(locations){
     console.log('locations received: ', locations.received);
     console.log('locations rejected: ', locations.rejected);
   })
