@@ -37,7 +37,7 @@ geocoder
   .on('location:rejected', function(location){
     console.log('location rejected: ', location);
   })
-  .on('geocoding:finished', function(locations){
+  .on('finished', function(locations){
     console.log('locations received: ', locations.received);
     console.log('locations rejected: ', locations.rejected);
   })
@@ -47,7 +47,7 @@ geocoder
 
    - `location:received` Location was successfully geocoded and received
    - `location:rejected` Location got rejected, no result
-   - `geocoding:finished` Geocoding finished, includes all locations that were successfully geocoded and rejected
+   - `finished` Geocoding finished, includes all locations that were successfully geocoded and rejected
 
 
 ## API
@@ -66,9 +66,6 @@ $ npm install
 $ npm test
 ```
 
-## Addendum
-
-For a ES6 Generator-based version have a look at [this branch](https://github.com/jonykrause/mapquest-geocoder/blob/es6-generator-flattened/index.js)
 
 ## License
 
