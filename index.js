@@ -29,7 +29,7 @@ module.exports = Geocoder;
  * @param  {String} key MapQuest requires an App Key
  */
 
-function Geocoder (appKey) {
+function Geocoder(appKey) {
   if (!appKey) throw new Error('Geocoder requires a MapQuest App Key');
   this.appKey = appKey;
   this.host = 'open.mapquestapi.com';
@@ -108,7 +108,7 @@ Geocoder.prototype.requestLocation = function(location, callback, options) {
 
   return request({
     host: this.host,
-    path: options.reverse ? this.reversePath + location : this.path +  location,
+    path: options.reverse ? this.reversePath + location : this.path + location,
     port: 80,
     headers: {}
   }, callback);
@@ -116,7 +116,7 @@ Geocoder.prototype.requestLocation = function(location, callback, options) {
 
 
 /**
- * Request wrapper
+ * get helper
  *
  * @param {Object} params
  * @param {Function} callback
