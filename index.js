@@ -29,19 +29,17 @@ module.exports = Geocoder;
  * @param  {String} key MapQuest requires an App Key
  */
 
-function Geocoder (key) {
-  if (!key) throw new Error('Geocoder requires a MapQuest App Key');
-  this.service = {
-    host: 'open.mapquestapi.com',
-    path: '/geocoding/v1/address?',
-    reversePath: '/geocoding/v1/reverse?',
-    key: key
-  }
+function Geocoder (appKey) {
+  if (!appKey) throw new Error('Geocoder requires a MapQuest App Key');
+  this.appKey = appKey;
+  this.host = 'open.mapquestapi.com';
+  this.path = '/geocoding/v1/address?';
+  this.reversePath = '/geocoding/v1/reverse?';
 }
 
 
 /**
- * Interit from `EventEmitter.prototype`.
+ * Interit from `EventEmitter.prototype`
  */
 
 util.inherits(Geocoder, EventEmitter);
@@ -62,7 +60,7 @@ util.inherits(Geocoder, EventEmitter);
 
 Geocoder.prototype.geocode = function(locations, callback, options) {
   var _this = this; 
-  var geocoded = {};
+  var results = { received: [], rejected: [] };
 
   if (!Array.isArray(locations)) locations = locations.split();
 
@@ -70,8 +68,8 @@ Geocoder.prototype.geocode = function(locations, callback, options) {
     var current;
 
     if (!locations.length) {
-      _this.emit('geocoding:finished', geocoded);
-      if (callback) callback(null, geocoded);
+      _this.emit('finished', results);
+      if (callback) callback(null, results);
       return _this;
     }
 
@@ -81,16 +79,14 @@ Geocoder.prototype.geocode = function(locations, callback, options) {
       if (err) return callback(err);
       var result = JSON.parse(data).results;
       if (result[0].locations.length) {
-        geocoded.received = geocoded.received || [];
-        geocoded.received.push(result);
+        results.received.push(result);
         _this.emit('location:received', result[0].locations[0]);
       } else {
-        geocoded.rejected = geocoded.rejected || [];
-        geocoded.rejected.push(result);
+        results.rejected.push(result);
         _this.emit('location:rejected', result[0].providedLocation.location);
       }
       setImmediate(next);
-    }, options )
+    }, options);
   }
   next();
   return this;
@@ -106,17 +102,16 @@ Geocoder.prototype.geocode = function(locations, callback, options) {
  */
 
 Geocoder.prototype.requestLocation = function(location, callback, options) {
-  if (!location) throw new Error( "Geocoder.requestLocation requires a location");
-  if (!options) options = {};
-  var locationPath = encodeURIComponent(location) + '&key=' + this.service.key;
-  var params = {
-    host: this.service.host,
-    path: options.reverse ? this.service.reversePath + 'location=' + locationPath : this.service.path + 'location=' + locationPath,
+  if (!location) throw new Error('Geocoder.requestLocation requires a location');
+  options = options || {};
+  location = 'location=' + encodeURIComponent(location) + '&key=' + this.appKey;
+
+  return request({
+    host: this.host,
+    path: options.reverse ? this.reversePath + location : this.path +  location,
     port: 80,
     headers: {}
-  };
-
-  return this.request(params, callback);
+  }, callback);
 };
 
 
@@ -127,7 +122,7 @@ Geocoder.prototype.requestLocation = function(location, callback, options) {
  * @param {Function} callback
  */
 
-Geocoder.prototype.request = function(params, callback) {
+function request(params, callback) {
   http.get( params, function (response) {
     var data = '';
     response.on('error', function(err) {
@@ -138,7 +133,7 @@ Geocoder.prototype.request = function(params, callback) {
       data += chunk;
     });
 
-    response.on('end', function(argument) {
+    response.on('end', function() {
       return callback(null, data);
     });
 
