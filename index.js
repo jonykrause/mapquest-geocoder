@@ -127,10 +127,10 @@ function request(params, callback) {
 
   }).on('error', function(err) {
     return callback(err);
-  })
-};
+  });
+}
 
 
 function isLatLng(str) {
   return str.match(/^\s*[-+]?\d+\.\d+\,\s?[-+]?\d+\.\d+\s*$/);
-};
+}
