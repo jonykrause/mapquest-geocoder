@@ -7,9 +7,9 @@ geocoder
     if (err) throw err;
     console.log('locations received: ', locations.received);
     console.log('locations rejected: ', locations.rejected);
-  }, { reverse: true })
+  })
 
-  .geocode('Unter den Linden 17, Berlin, Germany', function(err, locations) {
+  .geocode(['Unter den Linden 17, Berlin, Germany'], function(err, locations) {
     if (err) throw err;
     console.log('locations received: ', locations.received);
     console.log('locations rejected: ', locations.rejected);

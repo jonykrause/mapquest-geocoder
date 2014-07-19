@@ -3,11 +3,11 @@ var should = require('should');
 
 
 var fixtures = {
-  validAddressList: ['Kabul, Afghanistan' , 'New York, USA', 'Unter den Linden 17, Berlin, Germany'],
+  validAddressList: ['52.516815, 13.390421', 'Kabul, Afghanistan' , 'New York, USA', 'Unter den Linden 17, Berlin, Germany'],
   invalidAddressList: ['Kabul, Afghanistan', 'foo, bar, baz', 'Unter den Linden 17, Berlin, Germany'],
-  validAddress: 'Unter den Linden 17, Berlin, Germany',
-  invalidAddress: 'foo, bar, baz',
-  latLong: '52.516815, 13.390421'
+  validAddress: ['Unter den Linden 17, Berlin, Germany'],
+  invalidAddress: ['foo, bar, baz'],
+  latLong: ['52.516815, 13.390421']
 }
 
 describe('Geocoder', function() {
@@ -58,7 +58,7 @@ describe('Geocoder', function() {
         if (err) throw err;
         results.rejected.should.be.empty;
         results.received.should.not.be.empty;
-        results.received.should.have.length(3);
+        results.received.should.have.length(4);
         done();
       })
 

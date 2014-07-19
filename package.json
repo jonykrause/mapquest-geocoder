@@ -15,5 +15,8 @@
   "repository": "git://github.com/jonykrause/mapquest-geocoder",
   "scripts": {
     "test": "mocha"
+  },
+  "dependencies": {
+    "async": "^0.9.0"
   }
 }
