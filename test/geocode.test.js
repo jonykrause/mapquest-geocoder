@@ -3,7 +3,6 @@ var should = require('should');
 
 
 var fixtures = {
-  key: 'yourAppKeyHere',
   validAddressList: ['Kabul, Afghanistan' , 'New York, USA', 'Unter den Linden 17, Berlin, Germany'],
   invalidAddressList: ['Kabul, Afghanistan', 'foo, bar, baz', 'Unter den Linden 17, Berlin, Germany'],
   validAddress: 'Unter den Linden 17, Berlin, Germany',
@@ -14,16 +13,15 @@ var fixtures = {
 describe('Geocoder', function() {
 
   beforeEach(function() {
-    geocoder = new Geocoder(fixtures.key);
+    geocoder = new Geocoder('yourAppKeyHere');
   });
 
   describe('#geocode("valid address")', function() {
     it('should return received data', function(done) {
-      geocoder.geocode(fixtures.validAddress, function(err, geocoded) {
+      geocoder.geocode(fixtures.validAddress, function(err, results) {
         if (err) throw err;
-        should.exist(geocoded.received);
-        should.not.exist(geocoded.rejected);
-        geocoded.received.should.not.be.empty;
+        results.rejected.should.be.empty;
+        results.received.should.not.be.empty;
         done();
       })
     })
@@ -32,11 +30,10 @@ describe('Geocoder', function() {
 
   describe('#geocode("invalid address")', function() {
     it('should return rejected data', function(done) {
-      geocoder.geocode(fixtures.invalidAddress, function(err, geocoded) {
+      geocoder.geocode(fixtures.invalidAddress, function(err, results) {
         if (err) throw err;
-        should.exist(geocoded.rejected);
-        should.not.exist(geocoded.received);
-        geocoded.rejected.should.not.be.empty;
+        results.rejected.should.not.be.empty;
+        results.received.should.be.empty;
         done();
       })
     })
@@ -45,11 +42,10 @@ describe('Geocoder', function() {
 
   describe('#geocode(lat, long")', function() {
     it('should return received data', function(done) {
-      geocoder.geocode(fixtures.latLong, function(err, geocoded) {
+      geocoder.geocode(fixtures.latLong, function(err, results) {
         if (err) throw err;
-        should.exist(geocoded.received);
-        should.not.exist(geocoded.rejected);
-        geocoded.received.should.not.be.empty;
+        results.rejected.should.be.empty;
+        results.received.should.not.be.empty;
         done();
       }, { reverse: true });
     })
@@ -58,11 +54,11 @@ describe('Geocoder', function() {
 
   describe('#geocode([valid list])', function() {
     it('should return received data', function(done) {
-      geocoder.geocode(fixtures.validAddressList, function(err, geocoded) {
+      geocoder.geocode(fixtures.validAddressList, function(err, results) {
         if (err) throw err;
-        should.exist(geocoded.received);
-        should.not.exist(geocoded.rejected);
-        geocoded.received.should.have.length(3);
+        results.rejected.should.be.empty;
+        results.received.should.not.be.empty;
+        results.received.should.have.length(3);
         done();
       })
 
@@ -72,12 +68,12 @@ describe('Geocoder', function() {
 
   describe('#geocode([invalid list])', function() {
     it('should return received and rejected data', function(done) {
-      geocoder.geocode(fixtures.invalidAddressList, function(err, geocoded) {
+      geocoder.geocode(fixtures.invalidAddressList, function(err, results) {
         if (err) throw err;
-        should.exist(geocoded.received);
-        should.exist(geocoded.rejected);
-        geocoded.rejected.should.have.length(1);
-        geocoded.received.should.have.length(2);
+        results.rejected.should.not.be.empty;
+        results.received.should.not.be.empty;
+        results.rejected.should.have.length(1);
+        results.received.should.have.length(2);
         done();
       })
     })
