@@ -50,8 +50,8 @@ util.inherits(Geocoder, EventEmitter);
 /**
  * Geocode a list of locations
  *
- * @param {type} default
- * @return {type} default
+ * @param {Array} list of locations
+ * @param {Function} callback
  * @api public
  */
 
@@ -102,7 +102,6 @@ Geocoder.prototype.geocode = function(locations, callback) {
   return this;
 };
 
-
 /**
  * get helper
  *
@@ -130,7 +129,7 @@ function request(params, callback) {
   });
 }
 
-
 function isLatLng(str) {
   return str.match(/^\s*[-+]?\d+\.\d+\,\s?[-+]?\d+\.\d+\s*$/);
 }
+
