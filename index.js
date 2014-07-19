@@ -63,7 +63,6 @@ Geocoder.prototype.geocode = function(locations, callback) {
   var results = { received: [], rejected: [] };
 
   function nextBatch() {
-
     var currentBatch;
 
     if (!locations.length) {
@@ -75,17 +74,14 @@ Geocoder.prototype.geocode = function(locations, callback) {
     currentBatch = locations.splice(0, _this.maxBatch);
 
     return async.each(currentBatch, function(current, callback) {
-
       var loc = 'location=' + encodeURIComponent(current) + '&key=' + _this.appKey;
-
       return request({
+        port: 80,
         host: _this.host,
-        path: isLatLng(current) ? _this.reversePath + loc : _this.path + loc,
-        port: 80
+        path: isLatLng(current) ? _this.reversePath + loc : _this.path + loc
       }, function(err, data) {
         if (err) return callback(err);
         var result = JSON.parse(data).results;
-
         if (result[0].locations.length) {
           results.received.push(result);
           _this.emit('location:received', result[0].locations[0]);
@@ -95,7 +91,6 @@ Geocoder.prototype.geocode = function(locations, callback) {
         }
         return callback();
       });
-
     }, function(err) {
       if (err) callback(err);
       setImmediate(nextBatch);
