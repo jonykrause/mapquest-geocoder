@@ -12,9 +12,9 @@ var geocoder = new Geocoder('yourAppKeyHere');
 
 geocoder
   .geocode([
-    '52.516815, 13.390421',
+    'New York, USA',
     'Kabul, Afghanistan',
-    'New York, USA', 
+    '52.516815, 13.390421',
     'Unter den Linden 17, Berlin, Germany'
   ], function(err, locations) {
     if (err) throw err;
